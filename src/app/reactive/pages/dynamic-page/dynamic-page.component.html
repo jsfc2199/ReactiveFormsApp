@@ -1,14 +1,14 @@
 <h2>Reactivos: <small> Dinámicos </small></h2>
 <hr>
 
-<form autocomplete="off">
+<form autocomplete="off" [formGroup] = "myForm" (ngSubmit)="onSubmit()">
 
     <!-- Nombre -->
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Nombre</label>
         <div class="col-sm-9">
             <input class="form-control"
-                   placeholder="Nombre de la persona">
+                   placeholder="Nombre de la persona" formControlName="name">
             <span class="form-text text-danger">
                    error message
             </span>
@@ -37,12 +37,16 @@
     <!-- Lista de Juegos Favoritos -->
     <div class="mb-3 row">
         <label class="col-sm-3 col-form-label">Favoritos</label>
-        <div class="col-sm-9">
-
-            <div class="mb-1">
+        <!-- enlazamos la propiedad con formArrayName -->
+        <div class="col-sm-9" formArrayName="favoriteGames">
+          <!-- usamos .controls para acceder a literalmente cada elemento del array -->
+            <div class="mb-1" *ngFor="let favorite of favoriteGames.controls; let i = index">
 
                 <div class="input-group">
-                    <input class="form-control">
+                  <!-- enlazamos mediante el indice ya que es demasiado dinámico -->
+                    <input
+                    [formControlName]="i"
+                    class="form-control">
 
                     <button class="btn btn-outline-danger"
                             type="button">
