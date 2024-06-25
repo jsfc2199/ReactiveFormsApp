@@ -48,7 +48,33 @@ export class BasicPageComponent {
   ngOnInit(): void {
     //usado principalmente de esta forma para usar información del backend
     // this.myForm2.reset({
-
     // })
+  }
+
+  isValidField(field: keyof typeof this.myForm2.controls) {
+    return (
+      this.myForm2.controls[field].errors &&
+      this.myForm2.controls[field].touched
+    );
+  }
+
+  getFieldErro(field: keyof typeof this.myForm2.controls) {
+    if (!this.myForm2.controls[field]) return;
+
+    const errors = this.myForm2.controls[field].errors || {};
+
+
+    for (const key of Object.keys(errors)) {
+      console.log(key)
+      switch (key) {
+        case 'required':
+          return 'este campo es requerido';
+        case 'minlength':
+          return `Mínimo ${errors['minlength'].requiredLength} caracteres`;
+        default:
+          break;
+      }
+    }
+    return null;
   }
 }
