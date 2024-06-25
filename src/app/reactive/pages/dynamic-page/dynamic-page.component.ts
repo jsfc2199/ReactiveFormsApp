@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-dynamic-page',
@@ -28,8 +28,14 @@ export class DynamicPageComponent {
       this.myForm.markAllAsTouched()
       return;
     }
-    console.log(this.myForm.value)
+    // console.log(this.myForm.value)
+
+    //se pueden usar las dos formas, y como ya tenemos un getter tiene mas sentido
+  //  (this.myForm.controls['favoriteGames'] as FormArray)  = this.fb.array([])
+   this.favoriteGames.clear()
+
     this.myForm.reset()
+
   }
 
   get favoriteGames(){
@@ -70,6 +76,20 @@ export class DynamicPageComponent {
     return null;
   }
 
+  newFavorite: FormControl = new FormControl('', Validators.required)
+
+  onAddFavorite(){
+    if(this.newFavorite.invalid) return
+
+    const newGame = this.newFavorite.value
+    //forma sin formBuilder
+    // this.favoriteGames.push(new FormControl(newGame, Validators.required))
+
+    //con formBuilder
+    this.favoriteGames.push(this.fb.control(newGame, Validators.required))
+
+    this.newFavorite.reset()
+  }
 
   onDeleteFavorite(index: number){
     this.favoriteGames.removeAt(index)
