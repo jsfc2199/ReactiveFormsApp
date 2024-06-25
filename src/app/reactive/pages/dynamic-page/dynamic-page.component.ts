@@ -35,4 +35,40 @@ export class DynamicPageComponent {
   get favoriteGames(){
     return this.myForm.get('favoriteGames') as FormArray
   }
+
+  isValidField(field: keyof typeof this.myForm.controls) {
+    return (
+      this.myForm.controls[field].errors &&
+      this.myForm.controls[field].touched
+    );
+  }
+
+  isValidFiledInArray(formArray: FormArray, i: number){
+    return (
+      formArray.controls[i].errors &&
+      formArray.controls[i].touched
+    );
+  }
+
+  getFieldErro(field: keyof typeof this.myForm.controls) {
+    if (!this.myForm.controls[field]) return;
+
+    const errors = this.myForm.controls[field].errors || {};
+
+
+    for (const key of Object.keys(errors)) {
+      console.log(key)
+      switch (key) {
+        case 'required':
+          return 'este campo es requerido';
+        case 'minlength':
+          return `Mínimo ${errors['minlength'].requiredLength} caracteres`;
+        default:
+          break;
+      }
+    }
+    return null;
+  }
+
+
 }
