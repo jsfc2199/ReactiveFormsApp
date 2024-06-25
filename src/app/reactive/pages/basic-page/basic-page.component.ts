@@ -29,7 +29,10 @@ export class BasicPageComponent {
   });
 
   onSave() {
-    if (this.myForm2.invalid) return;
+    if (this.myForm2.invalid) {
+      this.myForm2.markAllAsTouched();
+      return;
+    }
     console.log(this.myForm2.value);
 
     //re establecer full el formulario
