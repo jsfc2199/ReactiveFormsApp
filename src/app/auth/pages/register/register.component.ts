@@ -16,6 +16,11 @@ export class RegisterComponent {
     username: ['', [Validators.required, this.validatorsService.cantBeStrider, Validators.pattern(this.validatorsService.firstNameAndLastnamePattern)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     password2: ['', [Validators.required]],
+  }, {
+    //validadores implícitos para todo el formulario
+    validators:[
+      this.validatorsService.isFieldOneEqualFiledTwo('password','password2')
+    ]
   });
 
 
