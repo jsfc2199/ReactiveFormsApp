@@ -24,4 +24,6 @@ export class ValidatorsService {
     const value = form.controls[field].errors &&  form.controls[field].touched
     return value;
   }
+
+  
 }
