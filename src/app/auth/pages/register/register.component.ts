@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { cantBeStrider, emailPattern, firstNameAndLastnamePattern } from '../../../shared/validators/validators.functions';
+import { ValidatorsService } from '../../../shared/services/validators.service';
 
 @Component({
   selector: 'app-register',
@@ -10,20 +10,22 @@ export class RegisterComponent {
 
   public form: FormGroup = this.fb.group({
     name: ['', [Validators.required]],
-    email: ['', [Validators.required,  Validators.pattern(emailPattern)]],
-    username: ['', [Validators.required, cantBeStrider, Validators.pattern(firstNameAndLastnamePattern)]],
+    email: ['', [Validators.required,  Validators.pattern(this.validatorsService.emailPattern)]],
+    username: ['', [Validators.required, this.validatorsService.cantBeStrider, Validators.pattern(this.validatorsService.firstNameAndLastnamePattern)]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     password2: ['', [Validators.required]],
   });
 
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private validatorsService: ValidatorsService) {}
 
   isValidField(field: keyof typeof this.form.controls) {
-    return (
-      this.form.controls[field].errors &&
-      this.form.controls[field].touched
-    );
+    return this.validatorsService.isValidField(field, this.form)
+
+    // return (
+    //   this.form.controls[field].errors &&
+    //   this.form.controls[field].touched
+    // );
   }
 
   onSave(){
